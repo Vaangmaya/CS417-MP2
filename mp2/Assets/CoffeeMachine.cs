@@ -3,9 +3,9 @@ using System.Collections;
 
 public class CoffeeMachine : MonoBehaviour
 {
-    public float brewTime = 3.0f;
-    public float coffeeValue = 5.0f;
-    public bool isAutomatic = false;
+    public float brewTime = 3.0f; // 1.5f for upgraded
+    public float coffeeValue = 5.0f; // 8.0f for upgraded
+    public bool isAutomatic = false; // true for upgraded
 
     public GameObject fincan;
     public GameObject kahve;
@@ -84,5 +84,10 @@ public class CoffeeMachine : MonoBehaviour
             fincan.SetActive(true);
             kahve.SetActive(true);
         }
+    }
+
+    void SetAutomatic(bool automatic)
+    {
+        isAutomatic = automatic;
     }
 }
