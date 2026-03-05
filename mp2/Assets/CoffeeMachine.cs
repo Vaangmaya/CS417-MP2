@@ -49,7 +49,9 @@ public class CoffeeMachine : MonoBehaviour
 
         if (isAutomatic)
         {
+            yield return new WaitForSeconds(0.5f);
             SellCoffee();
+            yield return new WaitForSeconds(0.5f);
             OnMachineClicked(); 
         }
     }
