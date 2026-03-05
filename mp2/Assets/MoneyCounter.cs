@@ -3,19 +3,37 @@ using TMPro;
 
 public class MoneyCounter : MonoBehaviour
 {
-    public TextMeshProUGUI moneyDisplay; 
+    public TextMeshProUGUI moneyDisplay;
     public float moneyCount = 0f;
-    public float moneyRate = 5.0f; 
+    public float multiplier = 1.0f;
+    public float passiveRate = 0.5f;
 
-    void Update()
+    void Start()
     {
-        moneyCount += moneyRate * Time.deltaTime;
+        UpdateUI();
+    }
 
-        if (moneyDisplay != null)
+    public void AddMoney(float amount)
+    {
+        moneyCount += amount * multiplier;
+    }
+
+    public void Update()
+    {
+        if (passiveRate > 0)
         {
-            moneyDisplay.text = "Money: $" + moneyCount.ToString("F2");
+            moneyCount += passiveRate * Time.deltaTime;
+            UpdateUI();
         }
     }
+
+    public void AddPassiveRate(float amount)
+    {
+        passiveRate += amount * multiplier;
+    }
+
+    void UpdateUI()
+    {
+        moneyDisplay.text = "Money: $" + moneyCount.ToString("F2");
+    }
 }
-
-
