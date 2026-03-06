@@ -15,10 +15,12 @@ public class CoffeeMachine : MonoBehaviour
     private bool isBrewing = false;
     private bool coffeeReady = false;
     private MoneyCounter moneyManager;
+    private CoffeeCounter coffeeCount;
 
     void Start()
     {
         moneyManager = Object.FindFirstObjectByType<MoneyCounter>();
+        coffeeCount = Object.FindFirstObjectByType<CoffeeCounter>();
         SetVisualState("Idle");
     }
 
@@ -59,6 +61,7 @@ public class CoffeeMachine : MonoBehaviour
     void SellCoffee()
     {
         moneyManager.AddMoney(coffeeValue);
+        coffeeCount.RegisterSale();
         coffeeReady = false;
         SetVisualState("Idle");
         Debug.Log("Coffee Sold!");
