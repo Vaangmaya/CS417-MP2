@@ -20,23 +20,38 @@ public class CoffeeShopManager : MonoBehaviour
     public float priceForMachine3 = 1000f;
     public float priceForUpgraded1 = 1500f;
     public float priceForUpgraded2 = 2000f;
+    public float priceForWall = 3000f;
+    public float priceForVending1 = 4000f;
+    public float priceForVending2 = 6500f;
+    public float priceForVending3 = 10000f;
 
     public float passiveNormal = 0.5f;
-    public float passiveUpgraded = 1.0f;
+    public float passiveUpgraded = 5.0f;
+    public float passiveVending = 50.0f;
 
     private MoneyCounter moneySystem;
     private bool machine2Bought = false;
     private bool machine3Bought = false;
     private bool upgraded1Bought = false;
+    private bool upgraded2Bought = false;
+    private bool wallBought = false;
+    private bool vending1Bought = false;
+    private bool vending2Bought = false;
 
     public GameObject realWall;
     public GameObject ghostWall;
     public GameObject wallPurchasePrompt;
     public GameObject vendingStatsDisplay;
-    public GameObject[] newSectionMachines;
-    public float priceForWall = 3000f;
 
-private bool upgraded2Bought = false;
+    public GameObject vending1;
+    public GameObject vending2;
+    public GameObject vending3;
+    public GameObject vending1Ghost;
+    public GameObject vending2Ghost;
+    public GameObject vending3Ghost;
+    public GameObject vending1Real;
+    public GameObject vending2Real;
+    public GameObject vending3Real;
 
     void Start()
     {
@@ -125,37 +140,114 @@ private bool upgraded2Bought = false;
         }
     }
 
-public void AttemptPurchaseUpgraded2()
-{
-    if (upgraded1Bought && moneySystem.moneyCount >= priceForUpgraded2)
+    public void AttemptPurchaseUpgraded2()
     {
-        moneySystem.moneyCount -= priceForUpgraded2;
-        upgraded2Bought = true;
-        upgraded2RealVisual.SetActive(true);
-        upgraded2Ghost.SetActive(false);
-        moneySystem.AddPassiveRate(passiveUpgraded);
-
-        //make the wall ghost
-        realWall.SetActive(false);
-        ghostWall.SetActive(true);
-        wallPurchasePrompt.SetActive(true);
-    }
-}
-
-public void AttemptPurchaseWall()
-{
-    if (upgraded2Bought && moneySystem.moneyCount >= priceForWall)
-    {
-        Debug.Log("Wall purchased!");
-        moneySystem.moneyCount -= priceForWall;
-        ghostWall.SetActive(false);
-        wallPurchasePrompt.SetActive(false);
-        vendingStatsDisplay.SetActive(true);
-
-        foreach (GameObject machine in newSectionMachines)
+        if (upgraded1Bought && moneySystem.moneyCount >= priceForUpgraded2)
         {
-            machine.SetActive(true);
+            moneySystem.moneyCount -= priceForUpgraded2;
+            upgraded2Bought = true;
+            upgraded2RealVisual.SetActive(true);
+            upgraded2Ghost.SetActive(false);
+            moneySystem.AddPassiveRate(passiveUpgraded);
+
+            //make the wall ghost
+            realWall.SetActive(false);
+            ghostWall.SetActive(true);
+            wallPurchasePrompt.SetActive(true);
+        }
+        else if (!upgraded1Bought)
+        {
+            Debug.Log("You must buy Upgraded Machine 1 first!");
+        }
+        else 
+        {
+            Debug.Log("Not enough money to buy Upgraded Machine 2!");
         }
     }
-}
+
+    public void AttemptPurchaseWall()
+    {
+        if (upgraded2Bought && moneySystem.moneyCount >= priceForWall)
+        {
+            Debug.Log("Wall purchased!");
+            moneySystem.moneyCount -= priceForWall;
+            ghostWall.SetActive(false);
+            wallPurchasePrompt.SetActive(false);
+            vendingStatsDisplay.SetActive(true);
+            wallBought = true;
+
+            vending1Ghost.SetActive(true);
+        }
+    }
+
+    public void AttemptPurchaseVending1()
+    {
+        if (wallBought && moneySystem.moneyCount >= priceForVending1)
+        {
+            moneySystem.moneyCount -= priceForVending1;
+            vending1Bought = true;
+            vending1Real.SetActive(true);
+            vending1Real.GetComponent<SellVending>().ActivateMachine();
+            vending1Ghost.SetActive(false);
+
+            vending2Ghost.SetActive(true);
+
+            moneySystem.AddPassiveRate(passiveVending);
+        }
+        else if (!wallBought)
+        {
+            Debug.Log("You must buy Upgraded Machine 2 first!");
+        }
+        else 
+        {
+            Debug.Log("Not enough money to buy Vending Machine 1!");
+        }
+    }
+
+    public void AttemptPurchaseVending2()
+    {
+        if (vending1Bought && moneySystem.moneyCount >= priceForVending2)
+        {
+            moneySystem.moneyCount -= priceForVending2;
+            vending2Bought = true;
+            vending2Real.SetActive(true);
+            vending2Real.GetComponent<SellVending>().ActivateMachine();
+            vending2Ghost.SetActive(false);
+
+            vending3Ghost.SetActive(true);
+
+            moneySystem.AddPassiveRate(passiveVending);
+        }
+        else if (!vending1Bought)
+        {
+            Debug.Log("You must buy Vending Machine 1 first!");
+        }
+        else 
+        {
+            Debug.Log("Not enough money to buy Vending Machine 2!");
+        }
+    }
+
+    public void AttemptPurchaseVending3()
+    {
+        if (vending2Bought && moneySystem.moneyCount >= priceForVending3)
+        {
+            moneySystem.moneyCount -= priceForVending3;
+            vending3Real.SetActive(true);
+            vending3Real.GetComponent<SellVending>().ActivateMachine();
+            vending3Ghost.SetActive(false);
+
+            moneySystem.AddPassiveRate(passiveVending);
+        }
+        else if (!vending2Bought)
+        {
+            Debug.Log("You must buy Vending Machine 2 first!");
+        }
+        else 
+        {
+            Debug.Log("Not enough money to buy Vending Machine 3!");
+        }
+    }
+
+    
 }

@@ -5,6 +5,7 @@ public class SellVending : MonoBehaviour
 {
     public float vendTime = 3.0f;
     public float vendValue = 3.0f;
+    public int vendCount = 1;
 
     private MoneyCounter moneyManager;
     private VendingCount vendingCount;
@@ -13,6 +14,10 @@ public class SellVending : MonoBehaviour
     {
         moneyManager = Object.FindFirstObjectByType<MoneyCounter>();
         vendingCount = Object.FindFirstObjectByType<VendingCount>();
+    }
+
+    public void ActivateMachine()
+    {
         StartCoroutine(VendingLoop());
     }
 
@@ -28,6 +33,6 @@ public class SellVending : MonoBehaviour
     void SellItem()
     {
         moneyManager.AddMoney(vendValue);
-        vendingCount.RegisterSale();
+        vendingCount.RegisterSale(vendCount);
     }
 }
