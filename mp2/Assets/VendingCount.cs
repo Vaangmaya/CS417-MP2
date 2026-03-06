@@ -6,9 +6,9 @@ public class VendingCount : MonoBehaviour
     public TextMeshProUGUI vendingDisplay;
     public int totalVendingsSold = 0;
 
-    public void RegisterSale()
+    public void RegisterSale(int count)
     {
-        totalVendingsSold++;
+        totalVendingsSold += count;
         UpdateUI();
     }
 
