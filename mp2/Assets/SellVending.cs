@@ -5,7 +5,7 @@ public class SellVending : MonoBehaviour
 {
     public float vendTime = 3.0f;
     public float vendValue = 3.0f;
-    public int vendCount = 1;
+    public float vendCount = 1;
 
     private MoneyCounter moneyManager;
     private VendingCount vendingCount;

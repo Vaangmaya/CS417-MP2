@@ -30,6 +30,7 @@ public class CoffeeShopManager : MonoBehaviour
     public float passiveVending = 50.0f;
 
     private MoneyCounter moneySystem;
+    private VendingCount vendingSystem;
     private bool machine2Bought = false;
     private bool machine3Bought = false;
     private bool upgraded1Bought = false;
@@ -56,6 +57,7 @@ public class CoffeeShopManager : MonoBehaviour
     void Start()
     {
         moneySystem = Object.FindFirstObjectByType<MoneyCounter>();
+        vendingSystem = Object.FindFirstObjectByType<VendingCount>();
 
         machine2RealVisual.SetActive(false);
         machine3RealVisual.SetActive(false);
@@ -187,6 +189,7 @@ public class CoffeeShopManager : MonoBehaviour
             moneySystem.moneyCount -= priceForVending1;
             vending1Bought = true;
             vending1Real.SetActive(true);
+            vendingSystem.SetZero();
             vending1Real.GetComponent<SellVending>().ActivateMachine();
             vending1Ghost.SetActive(false);
 
