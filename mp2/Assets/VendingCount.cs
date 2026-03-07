@@ -31,6 +31,11 @@ public class VendingCount : MonoBehaviour
         totalVendingsSold += count;
     }
 
+    public void SetZero()
+    {
+        totalVendingsSold = 0f;
+    }
+
     void UpdateUI()
     {
         vendingDisplay.text = "Vendings Sold: " + totalVendingsSold.ToString("F1");

@@ -189,6 +189,7 @@ public class CoffeeShopManager : MonoBehaviour
             moneySystem.moneyCount -= priceForVending1;
             vending1Bought = true;
             vending1Real.SetActive(true);
+            vendingSystem.SetZero();
             vending1Real.GetComponent<SellVending>().ActivateMachine();
             vending1Ghost.SetActive(false);
 
