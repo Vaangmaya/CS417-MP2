@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class CoffeeShopManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class CoffeeShopManager : MonoBehaviour
     public GameObject upgraded1Parent;
     public GameObject upgraded2Parent;
 
+    public GameObject machine1Real;
     public GameObject machine2RealVisual;
     public GameObject machine2Ghost;
     public GameObject machine3RealVisual; 
@@ -53,6 +55,11 @@ public class CoffeeShopManager : MonoBehaviour
     public GameObject vending1Real;
     public GameObject vending2Real;
     public GameObject vending3Real;
+
+    public GameObject Powerups;
+    public int PowerupNumber = 0;
+    public float[] powerUpPrices = {2000, 10000};
+    public TextMeshProUGUI powerUpDisplay;
 
     void Start()
     {
@@ -196,6 +203,12 @@ public class CoffeeShopManager : MonoBehaviour
             vending2Ghost.SetActive(true);
 
             moneySystem.AddPassiveRate(passiveVending);
+
+            if (!Powerups.activeSelf && PowerupNumber == 1)
+            {
+                powerUpDisplay.text = "Vending Sell Price x2 \n Cost: $" + powerUpPrices[1].ToString("F2");
+                Powerups.SetActive(true);
+            }
         }
         else if (!wallBought)
         {
@@ -252,5 +265,60 @@ public class CoffeeShopManager : MonoBehaviour
         }
     }
 
-    
+    public void AttemptPurchasePowerUp()
+    {
+        if (PowerupNumber == 0 && moneySystem.moneyCount >= powerUpPrices[0])
+        {
+            moneySystem.moneyCount -= powerUpPrices[PowerupNumber];
+            PowerupNumber++;
+
+            CoffeeMachine[] machines = {machine1Real.GetComponentInChildren<CoffeeMachine>(), 
+                                        machine2RealVisual.GetComponentInChildren<CoffeeMachine>(), 
+                                        machine3RealVisual.GetComponentInChildren<CoffeeMachine>(), 
+                                        upgraded1RealVisual.GetComponentInChildren<CoffeeMachine>(), 
+                                        upgraded2RealVisual.GetComponentInChildren<CoffeeMachine>()};
+
+            foreach (CoffeeMachine machine in machines)
+            {
+                machine.multiplyValue(2.0f);
+            }
+            
+            if (vending1Bought)
+            {
+                powerUpDisplay.text = "Vending Sell Price x2 \n Cost: $" + powerUpPrices[1].ToString("F2");
+            }
+            else {
+                Powerups.SetActive(false);
+            }
+            
+        }
+        else if (PowerupNumber == 0)
+        {
+            Debug.Log("Not enough money to buy Power Up 1!");
+        }
+        else if (PowerupNumber == 1 && moneySystem.moneyCount >= powerUpPrices[1])
+        {
+            moneySystem.moneyCount -= powerUpPrices[1];
+            PowerupNumber++;
+
+            SellVending[] machines = {vending1Real.GetComponent<SellVending>(), 
+                                      vending2Real.GetComponent<SellVending>(), 
+                                      vending3Real.GetComponent<SellVending>()};
+
+            foreach (SellVending machine in machines)
+            {
+                machine.multiplyValue(2.0f);
+            }
+
+            Powerups.SetActive(false);
+        }
+        else if (PowerupNumber == 1)
+        {
+            Debug.Log("Not enough money to buy Power Up 2!");
+        }
+        else 
+        {
+            Debug.Log("All Power Ups bought");
+        }
+    }
 }
