@@ -7,6 +7,8 @@ public class MoneyCounter : MonoBehaviour
     public float moneyCount = 0f;
     public float multiplier = 1.0f;
     public float passiveRate = 0.5f;
+    public GameObject revenueTrophy;
+    private bool trophyAwarded = false;
 
     void Start()
     {
@@ -24,6 +26,17 @@ public class MoneyCounter : MonoBehaviour
         {
             moneyCount += passiveRate * Time.deltaTime;
             UpdateUI();
+            CheckTrophy();
+        }
+    }
+
+    void CheckTrophy()
+    {
+        if (!trophyAwarded && moneyCount >= 1000000f)
+        {
+            trophyAwarded = true;
+            revenueTrophy.SetActive(true);
+            Debug.Log("Revenue Trophy Unlocked!");
         }
     }
 

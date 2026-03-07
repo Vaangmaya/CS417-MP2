@@ -6,16 +6,24 @@ public class VendingCount : MonoBehaviour
     public TextMeshProUGUI vendingDisplay;
     public float totalVendingsSold = 0f;
     public float passiveRate = 0.1f;
+    public GameObject vendingTrophy;
+    private bool trophyAwarded = false;
 
     public void Update()
     {
         totalVendingsSold += passiveRate * Time.deltaTime;
         UpdateUI();
+        CheckTrophy();
     }
 
-    public void SetZero()
+    void CheckTrophy()
     {
-        totalVendingsSold = 0f;
+        if (!trophyAwarded && totalVendingsSold >= 1000f)
+        {
+            trophyAwarded = true;
+            vendingTrophy.SetActive(true);
+            Debug.Log("Vending Trophy Unlocked!");
+        }
     }
 
     public void RegisterSale(float count)
