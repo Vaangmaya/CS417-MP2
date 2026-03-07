@@ -93,4 +93,9 @@ public class CoffeeMachine : MonoBehaviour
     {
         isAutomatic = automatic;
     }
+
+    public void multiplyValue(float multiplier)
+    {
+        coffeeValue *= multiplier;
+    }
 }

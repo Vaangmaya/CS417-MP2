@@ -35,4 +35,9 @@ public class SellVending : MonoBehaviour
         moneyManager.AddMoney(vendValue);
         vendingCount.RegisterSale(vendCount);
     }
+
+    public void multiplyValue(float multiplier)
+    {
+        vendValue *= multiplier;
+    }
 }
